@@ -22,7 +22,7 @@ class CryptoData {
       jsonMapObject['name'],
       jsonMapObject['symbol'],
       double.parse(
-        jsonMapObject['changePercent24hr'],
+        jsonMapObject['changePercent24hr'] ?? "0",
       ),
       double.parse(
         jsonMapObject['priceUsd'],
