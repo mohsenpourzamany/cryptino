@@ -2,6 +2,7 @@ import 'package:cryptino/data/constant/constants.dart';
 import 'package:cryptino/data/model/crypto_data.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CoinListScreen extends StatefulWidget {
   CoinListScreen({super.key, this.cryptoList});
@@ -12,6 +13,9 @@ class CoinListScreen extends StatefulWidget {
 
 class _CoinListScreenState extends State<CoinListScreen> {
   List<CryptoData>? cryptoList;
+
+  bool isSearchLoadingVisible = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -24,17 +28,23 @@ class _CoinListScreenState extends State<CoinListScreen> {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: blackColor,
-        title: const Text(
-          'کریپتینو',
-          style: TextStyle(color: greyColor, fontFamily: 'me', fontSize: 24),
+        title: const Center(
+          child: Text(
+            'Cryptino',
+            style: TextStyle(
+                color: greenColor, fontSize: 24, fontWeight: FontWeight.w800),
+          ),
         ),
       ),
       body: SafeArea(
           child: Column(
         children: [
           TextField(
-            onChanged: (value) {},
+            onChanged: (value) {
+              _filterList(value);
+            },
             decoration: InputDecoration(
               hintText: ' Crypto Name ',
               hintStyle: const TextStyle(
@@ -51,6 +61,16 @@ class _CoinListScreenState extends State<CoinListScreen> {
               filled: true,
               fillColor: greenColor,
             ),
+          ),
+          Visibility(
+            visible: isSearchLoadingVisible,
+            child: const Text(
+              'Update crypto',
+              style: TextStyle(color: greenColor, fontSize: 15),
+            ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Expanded(
             child: RefreshIndicator(
@@ -155,5 +175,26 @@ class _CoinListScreenState extends State<CoinListScreen> {
         .toList();
 
     return cryptoList;
+  }
+
+  Future<void> _filterList(String enteredKeyword) async {
+    List<CryptoData> cryptoResultList = [];
+    if (enteredKeyword.isEmpty) {
+      setState(() {
+        isSearchLoadingVisible = true;
+      });
+      var result = await _getData();
+      setState(() {
+        cryptoList = result.cast<CryptoData>();
+        isSearchLoadingVisible = false;
+      });
+      return;
+    }
+    cryptoResultList = cryptoList!.where((element) {
+      return element.name.toLowerCase().contains(enteredKeyword.toLowerCase());
+    }).toList();
+    setState(() {
+      cryptoList = cryptoResultList;
+    });
   }
 }

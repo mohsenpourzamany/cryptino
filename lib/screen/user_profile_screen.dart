@@ -21,20 +21,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('ارزهای دیجیتال'),
+          title: const Text('ارزهای دیجیتال'),
         ),
         body: SafeArea(
             child: ListView.builder(
           itemCount: userList!.length,
           itemBuilder: (context, index) {
             return Container(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 height: 100,
                 color: Colors.amber,
                 child: Center(
                     child: Text(
                   userList![index].name,
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 )));
           },
         )));
