@@ -2,7 +2,6 @@ import 'package:cryptino/data/constant/constants.dart';
 import 'package:cryptino/data/model/crypto_data.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CoinListScreen extends StatefulWidget {
   CoinListScreen({super.key, this.cryptoList});
@@ -69,6 +68,7 @@ class _CoinListScreenState extends State<CoinListScreen> {
               style: TextStyle(color: greenColor, fontSize: 15),
             ),
           ),
+          // ignore: prefer_const_constructors
           SizedBox(
             height: 10,
           ),
@@ -77,9 +77,9 @@ class _CoinListScreenState extends State<CoinListScreen> {
               backgroundColor: greenColor,
               color: blackColor,
               onRefresh: () async {
-                // List<CryptoData> freshData = await _getData();
+                // List<CryptoData> fereshData = await _getData();
                 // setState(() {
-                //   cryptoList = freshData;
+                //   cryptoList = fereshData;
                 // });
               },
               child: ListView.builder(

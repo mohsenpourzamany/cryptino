@@ -29,11 +29,16 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Center(
             child: Column(
               children: [
-                Image(image: AssetImage('assets/images/Logo.png')),
+                Spacer(),
+                Image(
+                    width: 170,
+                    image: AssetImage('assets/images/cryptino-logo.png')),
+                Spacer(),
                 SpinKitWave(
                   size: 70,
-                  color: Color(0xffffffff),
+                  color: greenColor,
                 ),
+                Spacer(),
               ],
             ),
           ),
