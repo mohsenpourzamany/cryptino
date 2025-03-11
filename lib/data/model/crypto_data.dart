@@ -2,7 +2,7 @@ class CryptoData {
   String id;
   String name;
   String symbol;
-  double changePercent24hr;
+  double changePercent24Hr;
   double priceUsd;
   double marketCapUsd;
   int rank;
@@ -11,7 +11,7 @@ class CryptoData {
     this.id,
     this.name,
     this.symbol,
-    this.changePercent24hr,
+    this.changePercent24Hr,
     this.priceUsd,
     this.marketCapUsd,
     this.rank,
@@ -22,7 +22,7 @@ class CryptoData {
       jsonMapObject['name'],
       jsonMapObject['symbol'],
       double.parse(
-        jsonMapObject['changePercent24hr'] ?? "0",
+        jsonMapObject['changePercent24Hr'],
       ),
       double.parse(
         jsonMapObject['priceUsd'],

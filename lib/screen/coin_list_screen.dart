@@ -3,6 +3,7 @@ import 'package:cryptino/data/model/crypto_data.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CoinListScreen extends StatefulWidget {
   CoinListScreen({super.key, this.cryptoList});
   List<CryptoData>? cryptoList;
@@ -17,7 +18,6 @@ class _CoinListScreenState extends State<CoinListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     cryptoList = widget.cryptoList;
   }
@@ -30,68 +30,135 @@ class _CoinListScreenState extends State<CoinListScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: blackColor,
         title: const Center(
-          child: Text(
-            'Cryptino',
-            style: TextStyle(
-                color: greenColor, fontSize: 24, fontWeight: FontWeight.w800),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(
+                Icons.settings,
+                color: greenColor,
+                size: 30,
+              ),
+              Text(
+                'Cryptino',
+                style: TextStyle(
+                    color: purpleColor,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800),
+              ),
+              Icon(
+                Icons.message,
+                color: greenColor,
+                size: 30,
+              ),
+            ],
           ),
         ),
       ),
       body: SafeArea(
-          child: Column(
-        children: [
-          TextField(
-            onChanged: (value) {
-              _filterList(value);
-            },
-            decoration: InputDecoration(
-              hintText: ' Crypto Name ',
-              hintStyle: const TextStyle(
-                fontFamily: 'vazir',
-                color: blackColor,
+        child: Column(
+          children: [
+            TextField(
+              onChanged: (value) {
+                _filterList(value);
+              },
+              decoration: InputDecoration(
+                hintText: ' Crypto Name ',
+                hintStyle: const TextStyle(
+                  fontFamily: 'vazir',
+                  color: blackColor,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                filled: true,
+                fillColor: greenColor,
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
+            ),
+            Visibility(
+              visible: isSearchLoadingVisible,
+              child: const Text(
+                'Update crypto',
+                style: TextStyle(color: greenColor, fontSize: 15),
+              ),
+            ),
+            // ignore: prefer_const_constructors
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: RefreshIndicator(
+                backgroundColor: greenColor,
+                color: blackColor,
+                onRefresh: () async {
+                  // List<CryptoData> fereshData = await _getData();
+                  // setState(() {
+                  //   cryptoList = fereshData;
+                  // });
+                },
+                child: ListView.builder(
+                  itemCount: cryptoList!.length,
+                  itemBuilder: (context, index) {
+                    return _getListTile(cryptoList![index]);
+                  },
                 ),
               ),
-              filled: true,
-              fillColor: greenColor,
             ),
-          ),
-          Visibility(
-            visible: isSearchLoadingVisible,
-            child: const Text(
-              'Update crypto',
-              style: TextStyle(color: greenColor, fontSize: 15),
-            ),
-          ),
-          // ignore: prefer_const_constructors
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              backgroundColor: greenColor,
-              color: blackColor,
-              onRefresh: () async {
-                // List<CryptoData> fereshData = await _getData();
-                // setState(() {
-                //   cryptoList = fereshData;
-                // });
-              },
-              child: ListView.builder(
-                itemCount: cryptoList!.length,
-                itemBuilder: (context, index) {
-                  return _getListTile(cryptoList![index]);
-                },
+            Container(
+              margin: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 40, vertical: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                    width: 130,
+                    height: 45,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        backgroundColor: purpleColor, // background
+                        foregroundColor: greenColor, // foreground
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        'Buy',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 130,
+                    height: 45,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        backgroundColor: greenColor, // background
+                        foregroundColor: purpleColor,
+
+                        // foreground
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        'sell',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-        ],
-      )),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -133,15 +200,15 @@ class _CoinListScreenState extends State<CoinListScreen> {
                   style: const TextStyle(color: greyColor, fontSize: 17),
                 ),
                 Text(
-                  crypto.changePercent24hr.toStringAsFixed(2),
+                  crypto.changePercent24Hr.toStringAsFixed(2),
                   style: TextStyle(
-                      color: _getColorChangeText(crypto.changePercent24hr)),
+                      color: _getColorChangeText(crypto.changePercent24Hr)),
                 )
               ],
             ),
             SizedBox(
               width: 50,
-              child: _getIconChangePercent(crypto.changePercent24hr),
+              child: _getIconChangePercent(crypto.changePercent24Hr),
             )
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:cryptino/data/model/user.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class UserProfileScreen extends StatefulWidget {
   UserProfileScreen({super.key, this.user});
   List<User>? user;
@@ -12,7 +13,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   List<User>? userList;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userList = widget.user;
   }
